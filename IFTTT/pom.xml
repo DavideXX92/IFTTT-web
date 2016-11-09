@@ -26,16 +26,11 @@
     	<artifactId>jstl</artifactId>
     	<version>1.2</version>
     </dependency>
-    <!-- dependency>
+    <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-webmvc</artifactId>
     	<version>4.2.0.RELEASE</version>
-    </dependency-->
-    <dependency>
-        <groupId>commons-logging</groupId>
-        <artifactId>commons-logging</artifactId>
-        <version>1.1.1</version>
-	</dependency>
+    </dependency>
     <!-- SPRING SECURITY -->
     <dependency>
 	    <groupId>org.springframework.security</groupId>
@@ -58,11 +53,11 @@
 		<artifactId>spring-social-twitter</artifactId>
 		<version>1.1.2.RELEASE</version>
 	</dependency>
-	<dependency>
+	<!--dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-autoconfigure</artifactId>
 		<version>1.4.1.RELEASE</version>
-	</dependency>
+	</dependency-->
   </dependencies>
   
   <build> 
