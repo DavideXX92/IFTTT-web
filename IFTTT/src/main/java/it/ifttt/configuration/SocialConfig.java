@@ -28,7 +28,7 @@ import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
 @Configuration
 @EnableSocial
-@ComponentScan(basePackages = {"it.ifttt.configuration"})
+@ComponentScan(basePackages={"it.ifttt.social"})
 public class SocialConfig implements SocialConfigurer {
  /*
 	@Autowired
@@ -85,7 +85,7 @@ public class SocialConfig implements SocialConfigurer {
 	@Override
 	public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator cfl) {
 		 // questo dovrebbe essere quello che in qualche modo riempie la tabella UserConnection
-		 JdbcUsersConnectionRepository repository =
+		JdbcUsersConnectionRepository repository =
 				 new JdbcUsersConnectionRepository(dataSource, cfl, Encryptors.noOpText());
 		 //repository.setConnectionSignUp(accountConnectionSignUpService);
 		 return repository;

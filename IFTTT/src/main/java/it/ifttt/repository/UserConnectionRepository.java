@@ -6,7 +6,6 @@ import org.springframework.data.repository.Repository;
 
 import it.ifttt.model.user.UserConnection;
 
-
 public interface UserConnectionRepository extends Repository<UserConnection, String>{
 
 	UserConnection findOneByUserIdAndProviderId(String username, String providerId);

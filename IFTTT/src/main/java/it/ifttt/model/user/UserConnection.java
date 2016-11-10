@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @IdClass(UserConnectionKey.class)
-@Table(name = "UserConnection")
+@Table(name = "userconnection")
 public class UserConnection {
 
 	/*
