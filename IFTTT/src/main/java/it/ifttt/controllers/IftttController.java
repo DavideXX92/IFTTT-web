@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import it.ifttt.repository.UserConnectionRepository;
 
 @Controller
+@RequestMapping("/gui")
 public class IftttController {			
 	@RequestMapping("/home")
 	public String home(Model model){		

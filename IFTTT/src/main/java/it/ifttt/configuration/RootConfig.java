@@ -42,24 +42,24 @@ public class RootConfig {
 	@Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(BasicDataSource dataSource) {
      
-            HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-            vendorAdapter.setDatabase(Database.MYSQL);
-            vendorAdapter.setGenerateDdl(false);
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setDatabase(Database.MYSQL);
+        vendorAdapter.setGenerateDdl(false);
  
-            LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-            factory.setJpaVendorAdapter(vendorAdapter);
-            factory.setPackagesToScan("it.ifttt.model");
-            factory.setDataSource(dataSource);
-            return factory;
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setJpaVendorAdapter(vendorAdapter);
+        factory.setPackagesToScan("it.ifttt.model");
+        factory.setDataSource(dataSource);
+        return factory;
     }
    
    
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory factory) {
  
-            JpaTransactionManager txManager = new JpaTransactionManager();
-            txManager.setEntityManagerFactory(factory);
-            return txManager;
+        JpaTransactionManager txManager = new JpaTransactionManager();
+        txManager.setEntityManagerFactory(factory);
+        return txManager;
  
     }
 }

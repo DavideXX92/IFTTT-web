@@ -23,10 +23,10 @@ DROP TABLE IF EXISTS `userifttt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `userifttt` (
-  `id` int(11) NOT NULL,
-  `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `salt` varchar(12) NOT NULL,
+  `id` bigint(20) NOT NULL,
+  `username` varchar(64) NOT NULL,
+  `password` varchar(64) NOT NULL,
+  `salt` varchar(10) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
@@ -36,6 +36,10 @@ CREATE TABLE `userifttt` (
 --
 -- Dumping data for table `userifttt`
 --
+
+INSERT INTO `userifttt` (`id`, `username`, `password`, `salt`, `enabled`) VALUES
+(1, 'admin', 'admin', '', 1),
+(2, 'user', 'password', '', 1);
 
 LOCK TABLES `userifttt` WRITE;
 /*!40000 ALTER TABLE `userifttt` DISABLE KEYS */;

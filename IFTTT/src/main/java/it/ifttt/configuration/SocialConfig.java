@@ -21,6 +21,7 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
+import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
@@ -50,9 +51,6 @@ public class SocialConfig implements SocialConfigurer {
         registry.addConnectionFactory(new GoogleConnectionFactory(
         		environment.getProperty("google.clientId"),
 				environment.getProperty("google.clientSecret")));
-        registry.addConnectionFactory(new FacebookConnectionFactory(
-        		environment.getProperty("facebook.clientId"),
-        		environment.getProperty("facebook.clientSecret")));
         		  
         	
         return registry;
@@ -62,11 +60,11 @@ public class SocialConfig implements SocialConfigurer {
 	
 	@Override
 	public void addConnectionFactories(ConnectionFactoryConfigurer cfc, Environment env) {
-	  
-	cfc.addConnectionFactory(new TwitterConnectionFactory(
-		env.getProperty("twitter.appKey"),
-		env.getProperty("twitter.appSecret")));
-	cfc.addConnectionFactory(new GoogleConnectionFactory(
+	  /*
+		cfc.addConnectionFactory(new TwitterConnectionFactory(
+			environment.getProperty("twitter.appKey"),
+			environment.getProperty("twitter.appSecret")));
+		cfc.addConnectionFactory(new GoogleConnectionFactory(
     		environment.getProperty("google.clientId"),
 			environment.getProperty("google.clientSecret")));
 		  /*
@@ -75,6 +73,7 @@ public class SocialConfig implements SocialConfigurer {
 		   env.getProperty("spring.social.google.appSecret"));
 		  gcf.setScope("email");
 		  cfc.addConnectionFactory(gcf);*/
+		
 	}
 	 
 	@Override
