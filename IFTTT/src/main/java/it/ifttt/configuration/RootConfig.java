@@ -48,7 +48,7 @@ public class RootConfig {
  
             LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
             factory.setJpaVendorAdapter(vendorAdapter);
-            factory.setPackagesToScan("it.ifttt.domain");
+            factory.setPackagesToScan("it.ifttt.model");
             factory.setDataSource(dataSource);
             return factory;
     }
