@@ -21,6 +21,7 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
+import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
@@ -28,7 +29,7 @@ import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
 @Configuration
 @EnableSocial
-@ComponentScan(basePackages={"it.ifttt.social"})
+@ComponentScan(basePackages={"it.ifttt"})
 public class SocialConfig implements SocialConfigurer {
  /*
 	@Autowired
@@ -50,10 +51,9 @@ public class SocialConfig implements SocialConfigurer {
         registry.addConnectionFactory(new GoogleConnectionFactory(
         		environment.getProperty("google.clientId"),
 				environment.getProperty("google.clientSecret")));
-        registry.addConnectionFactory(new FacebookConnectionFactory(
+      /*registry.addConnectionFactory(new FacebookConnectionFactory(
         		environment.getProperty("facebook.clientId"),
-        		environment.getProperty("facebook.clientSecret")));
-        		  
+        		environment.getProperty("facebook.clientSecret")));*/  		  
         	
         return registry;
 	}
@@ -100,10 +100,10 @@ public class SocialConfig implements SocialConfigurer {
         }
         return getUsersConnectionRepository(connectionFactoryLocator()).createConnectionRepository(authentication.getName());
     }
-	/*
-	@Bean
+	
+	/*@Bean
     public ConnectController connectController() {
         return new ConnectController(connectionFactoryLocator(), connectionRepository());
-    }
-    */
+    }*/
+    
 }
