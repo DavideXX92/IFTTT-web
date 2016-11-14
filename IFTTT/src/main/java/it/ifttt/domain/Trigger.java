@@ -22,8 +22,18 @@ public class Trigger {
     private TriggerPK idT;
 	private String nameT;
 	private List<Ingredient> ingredients;
-	//private Channel channel;
+	private Channel channel;
+	//private int idCh;
 	
+	/*@MapsId("idCh")
+	@JoinColumn(name="idCh", insertable=false, updatable=false)
+	public int getIdCh() {
+		return idCh;
+	}
+
+	public void setIdCh(int idCh) {
+		this.idCh = idCh;
+	}*/
 	public TriggerPK getIdT() {
 		return idT;
 	}
@@ -50,7 +60,7 @@ public class Trigger {
 		this.ingredients = ingredients;
 	}
 	
-	/*@Access(AccessType.PROPERTY)
+	@Access(AccessType.PROPERTY)
 	@MapsId("idCh")
 	@JoinColumn(name="idCh", insertable=false, updatable=false)
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -60,6 +70,6 @@ public class Trigger {
 	
 	public void setChannel(Channel channel) {
 		this.channel = channel;
-	}*/
+	}
 	
 }

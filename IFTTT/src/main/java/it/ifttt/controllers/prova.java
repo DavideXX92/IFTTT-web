@@ -89,7 +89,8 @@ public class prova {
 	
 	@RequestMapping(value="/getUsersWithAtLeastArecipeActive", method = RequestMethod.GET)
     public List<User> getUsersWithAtLeastArecipeActive() {
-		return repoService.getUsersWithAtLeastArecipeActive();
+		int idR = 1;
+		return repoService.getUsersWithAtLeastArecipeActive(idR);
 	}
 	
 	@RequestMapping(value="/printChannels", method = RequestMethod.GET)

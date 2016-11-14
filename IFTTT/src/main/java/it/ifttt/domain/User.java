@@ -27,7 +27,7 @@ public class User {
 	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	
 	private String username;
 	//@JsonProperty(access = Access.WRITE_ONLY)
@@ -44,10 +44,10 @@ public class User {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade=CascadeType.ALL)
     private Set<Role> roles = new HashSet<>();
 	
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getUsername() {

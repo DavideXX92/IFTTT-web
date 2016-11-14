@@ -21,8 +21,19 @@ public class Action {
     private ActionPK idA;
 	private String nameA;
 	private List<Ingredient> ingredients;
-	//private Channel channel;
-		
+	private Channel channel;
+	//private int idCh;
+	
+	/*@MapsId("idCh")
+	@JoinColumn(name="idCh", insertable=false, updatable=false)
+	public int getIdCh() {
+		return idCh;
+	}
+
+	public void setIdCh(int idCh) {
+		this.idCh = idCh;
+	}*/
+
 	public ActionPK getIdA() {
 		return idA;
 	}
@@ -49,7 +60,7 @@ public class Action {
 		this.ingredients = ingredients;
 	}
 	
-	/*@Access(AccessType.PROPERTY)
+	@Access(AccessType.PROPERTY)
 	@MapsId("idCh")
 	@JoinColumn(name="idCh", insertable=false, updatable=false)
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -59,7 +70,7 @@ public class Action {
 	
 	public void setChannel(Channel channel) {
 		this.channel = channel;
-	}*/
+	}
 	
 
 }

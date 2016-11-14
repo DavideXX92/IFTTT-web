@@ -16,6 +16,6 @@ public interface UserRepository extends Repository<User, Integer> {
 	
 	User save(User user);
 	
-	@Query(value = "SELECT * FROM userRecipe, userifttt WHERE id=idU AND isActive=1", nativeQuery = true)
-	List<User> getUsersWithAtLeastArecipeActive();
+	@Query(value = "SELECT * FROM userRecipe, userifttt WHERE id=idU AND isActive=1 AND idR=?1", nativeQuery = true)
+	List<User> getUsersWithAtLeastArecipeActive(int idR);
 }

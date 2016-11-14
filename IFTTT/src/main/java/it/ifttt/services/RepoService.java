@@ -57,8 +57,8 @@ public class RepoService {
 		}	
 	}
 	
-	public List<User> getUsersWithAtLeastArecipeActive(){
-		return UserRepo.getUsersWithAtLeastArecipeActive();
+	public List<User> getUsersWithAtLeastArecipeActive(int idR){
+		return UserRepo.getUsersWithAtLeastArecipeActive(idR);
 	}
 	
 	public List<Recipe> getRecipes(){
