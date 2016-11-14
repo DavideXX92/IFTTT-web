@@ -29,23 +29,26 @@ public class TriggerPollingService {
 	
 	@Scheduled(fixedDelay=5000)
 	public void triggerCheckEvent(){
-		List<Recipe> recipes = recipeRepository.getRecipeByUser>0();
-		
-		for(Recipe recipe : recipes){
-			List<User> users = userRepository.getUserByRecipeActive(recipe.getIdR());
-			Trigger trigger = recipe.getTrigger();
-			TriggerHandler triggerHandler = new TriggerHandler(trigger);
-			
-			for(User user : users){
-				List<UserIngredient> ingredients = userIngredientRepository.getIngredientsFromUserIdAndRecipeId();
-				List<Object> triggerParams = triggerHandler.raise(user, ingredients);
-				if(triggerParams.size() > 0){
-					System.out.println("Evento scatenato!");
-					for(Object params : triggerParams){
-						
+		List<Recipe> recipes = recipeRepository.findAll();
+		try{
+			for(Recipe recipe : recipes){
+				List<User> users = userRepository.getUsersWithAtLeastArecipeActive(recipe.getIdR());
+				Trigger trigger = recipe.getTrigger();
+				TriggerHandler triggerHandler = new TriggerHandler(trigger);
+				
+				for(User user : users){
+					List<UserIngredient> ingredients = userIngredientRepository.findAll(user.getId(), recipe.getIdR());
+					List<Object> triggerParams = triggerHandler.raise(user, ingredients, recipe);
+					if(triggerParams.size() > 0){
+						System.out.println("Evento scatenato!");
+						for(Object params : triggerParams){
+							
+						}
 					}
 				}
 			}
+		}catch(Exception e){
+			
 		}
 	}
 }

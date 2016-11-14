@@ -14,8 +14,10 @@ import com.google.api.services.calendar.model.Events;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import it.ifttt.domain.TriggerRefresh;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
+import it.ifttt.repository.TriggerRefreshRepository;
 import it.ifttt.social.CalendarCreator;
 import it.ifttt.trigger.TriggerEvent;
 import com.google.api.services.calendar.Calendar;
@@ -23,6 +25,9 @@ import com.google.api.services.calendar.Calendar;
 public class CalendarEventStarted implements TriggerEvent{
 	@Autowired
 	CalendarCreator calendarCreator;
+	
+	@Autowired
+	TriggerRefreshRepository triggerRefreshRepository;
 	
 	public static final String SUMMARY_KEY = "summary";
 	public static final String DESCRIPTION_KEY = "description";
@@ -35,13 +40,15 @@ public class CalendarEventStarted implements TriggerEvent{
 	private List<UserIngredient> userIngredients;
 	private Calendar calendar;
 	
+	private TriggerRefresh triggerRefresh;
+	
 	public CalendarEventStarted(){
 		this.user = null;
 		this.userIngredients = null;
 	}
 	
 	@Override
-	public List<Object> raise(User user, List<UserIngredient> ingredients) {
+	public List<Object> raise(User user, List<UserIngredient> ingredients) throws IOException{
 		List<Object> eventStarted = new ArrayList<Object>();
 		try {			
 			// get last created events
@@ -59,20 +66,23 @@ public class CalendarEventStarted implements TriggerEvent{
 	        	
 	        	System.out.printf("Event: %s (%s)\n", event.getSummary(), event.getCreated());
 	        	
-	        	if (new Date(event.getCreated().getValue()).after(getLastCheck())) {
+	        	if (new Date(event.getCreated().getValue()).after(triggerRefresh.getLastRefresh())) {
 	        		
 	        		System.out.println("Is new event");
-	        		setLastCheck(new Date(event.getCreated().getValue()));
+	        		//setLastCheck(new Date(event.getCreated().getValue()));
 	        		if (eventSatisfyTrigger(event)) {
 	        			System.out.println("Event satisfy trigger");
-	        			eventStarted.add(event);
-						return eventStarted;
+	        			eventStarted.add(event);						
 	        		}
 	        	}
 	        }
-		} catch (GeneralSecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	        
+	        if(eventStarted.size() > 0){
+	        	triggerRefresh.setLastRefresh(new Date());
+	        	triggerRefreshRepository.save(triggerRefresh);
+	        }
+	        
+	        return eventStarted;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -118,4 +128,8 @@ public class CalendarEventStarted implements TriggerEvent{
 		return true;
 	}
 
+	@Override
+	public void setTriggerRefresh(TriggerRefresh triggerRefresh) {
+		this.triggerRefresh = triggerRefresh;
+	}
 }

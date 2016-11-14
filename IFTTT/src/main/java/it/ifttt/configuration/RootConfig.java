@@ -44,7 +44,7 @@ public class RootConfig {
      
             HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
             vendorAdapter.setDatabase(Database.MYSQL);
-            vendorAdapter.setGenerateDdl(true);
+            vendorAdapter.setGenerateDdl(false);
             vendorAdapter.setShowSql(true);
  
             LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
