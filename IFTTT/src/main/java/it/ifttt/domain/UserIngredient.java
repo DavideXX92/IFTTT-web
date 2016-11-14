@@ -17,7 +17,6 @@ public class UserIngredient {
 	private Recipe recipe;
 	private Ingredient ingredient;
 	private String value;
-	private String condition;
 	
 	@Access(AccessType.PROPERTY)
 	@MapsId("idU")
@@ -59,10 +58,4 @@ public class UserIngredient {
 		this.value = value;
 	}
 	
-	public String getCondition() {
-		return condition;
-	}
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}
 }

@@ -10,10 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import it.ifttt.domain.Action;
 import it.ifttt.domain.Channel;
 import it.ifttt.domain.Recipe;
+import it.ifttt.domain.User;
+import it.ifttt.domain.UserIngredient;
 import it.ifttt.repository.ActionRepository;
 import it.ifttt.repository.ChannelRepository;
 import it.ifttt.repository.RecipeRepository;
 import it.ifttt.repository.TriggerRepository;
+import it.ifttt.repository.UserIngredientRepository;
 import it.ifttt.repository.UserRepository;
 
 @Service
@@ -30,6 +33,8 @@ public class RepoService {
 	private ActionRepository actionRepo;
 	@Autowired
 	private RecipeRepository recipeRepo;
+	@Autowired
+	private UserIngredientRepository userIngrRepo;
 	
 	public Set<Channel> getChannels(){
 		return chRepo.findAll();
@@ -50,5 +55,21 @@ public class RepoService {
 			System.out.println("La ricetta e' gia' presente nel db, ritorno quella gia' esistente");
 			return recipeDB;
 		}	
+	}
+	
+	public List<User> getUsersWithAtLeastArecipeActive(){
+		return UserRepo.getUsersWithAtLeastArecipeActive();
+	}
+	
+	public List<Recipe> getRecipes(){
+		return recipeRepo.findAll();
+	}
+	
+	public Recipe getRecipe(String control){
+		return recipeRepo.findOne(control);
+	}
+	
+	public List<UserIngredient> getIngredients(int idU, int idR){
+		return userIngrRepo.findAll(idU, idR);
 	}
 }

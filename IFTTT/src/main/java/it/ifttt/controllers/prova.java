@@ -30,6 +30,7 @@ import it.ifttt.domain.Channel;
 import it.ifttt.domain.Recipe;
 import it.ifttt.domain.Trigger;
 import it.ifttt.domain.User;
+import it.ifttt.domain.UserIngredient;
 import it.ifttt.repository.UserRepository;
 import it.ifttt.services.RepoService;
 import it.ifttt.services.security.SecurityService;
@@ -62,10 +63,33 @@ public class prova {
 		return repoService.getChannels();
 	}
 	
+	@RequestMapping(value="/getIngredients", method = RequestMethod.GET)
+    public List<UserIngredient> getIngredients() {
+		int idU = 1;
+		int idR = 2;
+		return repoService.getIngredients(idU, idR);
+	}
+	
+	
+	@RequestMapping(value="/getRecipes", method = RequestMethod.GET)
+    public List<Recipe> getRecipes() {
+		return repoService.getRecipes();
+	}
+	
+	@RequestMapping(value="/getRecipe", method = RequestMethod.GET)
+    public Recipe getRecipeCtrl() {
+		return repoService.getRecipe("chT1idT1chA2idA1");
+	}
+	
 	@RequestMapping(value="/saveRecipe", method = RequestMethod.PUT)
     public Recipe saveRecipe(Recipe recipe) {
 		recipe.generateControl();
 		return repoService.saveRecipe(recipe);
+	}
+	
+	@RequestMapping(value="/getUsersWithAtLeastArecipeActive", method = RequestMethod.GET)
+    public List<User> getUsersWithAtLeastArecipeActive() {
+		return repoService.getUsersWithAtLeastArecipeActive();
 	}
 	
 	@RequestMapping(value="/printChannels", method = RequestMethod.GET)

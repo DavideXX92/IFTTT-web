@@ -11,5 +11,9 @@ public interface RecipeRepository extends Repository<Recipe, Integer> {
 	
 	@Query(value = "SELECT * FROM recipe WHERE control = ?1", nativeQuery = true)
 	Recipe findOne(String control);
+	
 	Recipe save(Recipe recipe);
+	
+	List<Recipe> findAll();
+	
 }

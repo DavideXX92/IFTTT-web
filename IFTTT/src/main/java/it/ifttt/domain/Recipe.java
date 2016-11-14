@@ -2,8 +2,11 @@ package it.ifttt.domain;
 
 import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +24,7 @@ public class Recipe {
 	private int idR;
 	private String control;
 	private int nUsers;
-	private boolean isPublic;
+	private boolean published;
 	private int whoPublished;
 	private List<Action> actions;
 	private Trigger trigger;
@@ -47,12 +50,13 @@ public class Recipe {
 	public void setnUsers(int nUsers) {
 		this.nUsers = nUsers;
 	}
-	public boolean isPublic() {
-		return isPublic;
+	public boolean isPublished() {
+		return published;
 	}
-	public void setPublic(boolean isPublic) {
-		this.isPublic = isPublic;
+	public void setPublished(boolean published) {
+		this.published = published;
 	}
+	
 	public int getWhoPublished() {
 		return whoPublished;
 	}
@@ -60,7 +64,8 @@ public class Recipe {
 		this.whoPublished = whoPublished;
 	}
 	
-	@ManyToMany
+	@Access(AccessType.PROPERTY)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="actionRecipe", 
 	 		   joinColumns={@JoinColumn(name="idR")},
 	 		   inverseJoinColumns={@JoinColumn(name="idA"), @JoinColumn(name="idCh")})
@@ -72,7 +77,8 @@ public class Recipe {
 		this.actions = actions;
 	}
 	
-	@ManyToOne
+	@Access(AccessType.PROPERTY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumns({
 		@JoinColumn(name="idT",  referencedColumnName="idT", nullable=false),
 		@JoinColumn(name="idCh", referencedColumnName="idCh", nullable=false)

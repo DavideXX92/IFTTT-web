@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +22,7 @@ public class Trigger {
     private TriggerPK idT;
 	private String nameT;
 	private List<Ingredient> ingredients;
-	private Channel channel;
+	//private Channel channel;
 	
 	public TriggerPK getIdT() {
 		return idT;
@@ -49,17 +50,16 @@ public class Trigger {
 		this.ingredients = ingredients;
 	}
 	
-	@Access(AccessType.PROPERTY)
+	/*@Access(AccessType.PROPERTY)
 	@MapsId("idCh")
-	@JoinColumn(name="idCh")
-	@ManyToOne
+	@JoinColumn(name="idCh", insertable=false, updatable=false)
+	@ManyToOne(fetch=FetchType.LAZY)
 	public Channel getChannel() {
 		return channel;
 	}
 	
 	public void setChannel(Channel channel) {
 		this.channel = channel;
-	}
-	
+	}*/
 	
 }

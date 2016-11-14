@@ -36,7 +36,8 @@ public class Channel {
 		this.nameCh = nameCh;
 	}
 	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="channel")
+	//@OneToMany(fetch=FetchType.EAGER, mappedBy="channel")
+	@OneToMany(fetch=FetchType.EAGER)
 	public List<Trigger> getTriggers() {
 		return triggers;
 	}
@@ -45,7 +46,8 @@ public class Channel {
 		this.triggers = triggers;
 	}
 	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="channel")
+	//@OneToMany(fetch=FetchType.EAGER, mappedBy="channel")
+	@OneToMany(fetch=FetchType.EAGER)
 	public List<Action> getActions() {
 		return actions;
 	}
