@@ -62,11 +62,11 @@ public class prova {
 		return repoService.getChannels();
 	}
 	
-	/*@RequestMapping(value="/saveRecipe", method = RequestMethod.PUT)
+	@RequestMapping(value="/saveRecipe", method = RequestMethod.PUT)
     public Recipe saveRecipe(Recipe recipe) {
 		recipe.generateControl();
 		return repoService.saveRecipe(recipe);
-	}*/
+	}
 	
 	@RequestMapping(value="/printChannels", method = RequestMethod.GET)
     public String printChannels() {
