@@ -45,10 +45,11 @@ public class RootConfig {
             HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
             vendorAdapter.setDatabase(Database.MYSQL);
             vendorAdapter.setGenerateDdl(false);
+            vendorAdapter.setShowSql(true);
  
             LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
             factory.setJpaVendorAdapter(vendorAdapter);
-            factory.setPackagesToScan("it.ifttt.model");
+            factory.setPackagesToScan("it.ifttt.domain");
             factory.setDataSource(dataSource);
             return factory;
     }

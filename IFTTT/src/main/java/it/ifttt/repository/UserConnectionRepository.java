@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.springframework.data.repository.Repository;
 
-import it.ifttt.model.user.UserConnection;
+import it.ifttt.domain.UserConnection;
 
 public interface UserConnectionRepository extends Repository<UserConnection, String>{
 

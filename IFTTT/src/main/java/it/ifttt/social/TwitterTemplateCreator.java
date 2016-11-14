@@ -6,9 +6,9 @@ import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.api.impl.TwitterTemplate;
 import org.springframework.stereotype.Component;
 
-import it.ifttt.model.user.UnauthorizedChannelException;
-import it.ifttt.model.user.UserConnection;
+import it.ifttt.domain.UserConnection;
 import it.ifttt.repository.UserConnectionRepository;
+import it.ifttt.security.UnauthorizedChannelException;
 
 @Component
 public class TwitterTemplateCreator {

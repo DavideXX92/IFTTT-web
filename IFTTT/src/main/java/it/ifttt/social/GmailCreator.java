@@ -24,9 +24,9 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.gmail.Gmail;
 
-import it.ifttt.model.user.UnauthorizedChannelException;
-import it.ifttt.model.user.UserConnection;
+import it.ifttt.domain.UserConnection;
 import it.ifttt.repository.UserConnectionRepository;
+import it.ifttt.security.UnauthorizedChannelException;
 
 @Component
 @Scope("prototype")

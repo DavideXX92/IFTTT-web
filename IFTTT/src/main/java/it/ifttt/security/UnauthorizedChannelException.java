@@ -1,4 +1,4 @@
-package it.ifttt.model.user;
+package it.ifttt.security;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

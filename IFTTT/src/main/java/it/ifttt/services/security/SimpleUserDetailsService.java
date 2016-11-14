@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.ifttt.model.user.Role;
-import it.ifttt.model.user.User;
+import it.ifttt.domain.Role;
+import it.ifttt.domain.User;
 import it.ifttt.repository.RoleRepository;
 import it.ifttt.repository.UserRepository;
 

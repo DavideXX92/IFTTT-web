@@ -1,20 +1,24 @@
-package it.ifttt.model.user;
+package it.ifttt.domain;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
+//import com.fasterxml.jackson.annotation.JsonProperty;
+//import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "userifttt")
@@ -26,12 +30,13 @@ public class User {
 	private Long id;
 	
 	private String username;
-	@JsonProperty(access = Access.WRITE_ONLY)
+	//@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	@JsonIgnore
 	private String salt;
 	@JsonIgnore
 	private boolean enabled;
+
 	//@JsonIgnore
 	/*@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade=CascadeType.MERGE)
     private Set<Recipe> recipes = new HashSet<>();*/
@@ -71,6 +76,17 @@ public class User {
 		this.enabled = enabled;
 	}
 
+	/*
+	@Access(AccessType.PROPERTY)
+	@ManyToMany(fetch=FetchType.EAGER)
+	public List<Recipe> getRecipes() {
+		return recipes;
+	}
+	
+	public void setRecipes(List<Recipe> recipes) {
+		this.recipes = recipes;
+	}*/
+	
 	public Set<Role> getRoles() {
 		return roles;
 	}

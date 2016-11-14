@@ -4,8 +4,8 @@ import java.util.Set;
 
 import org.springframework.data.repository.Repository;
 
-import it.ifttt.model.user.Role;
-import it.ifttt.model.user.User;
+import it.ifttt.domain.Role;
+import it.ifttt.domain.User;
 
 public interface RoleRepository extends Repository<Role, Integer> {
 	

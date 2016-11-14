@@ -2,8 +2,8 @@ package it.ifttt.services.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import it.ifttt.model.user.Error;
-import it.ifttt.model.user.Response;
+import it.ifttt.security.Error;
+import it.ifttt.security.Response;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;

@@ -2,7 +2,9 @@ package it.ifttt.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.twitter.api.FilterStreamParameters;
@@ -23,9 +25,13 @@ import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.UserList;
 import twitter4j.UserStreamListener;
-
-import it.ifttt.model.user.User;
+import it.ifttt.domain.Action;
+import it.ifttt.domain.Channel;
+import it.ifttt.domain.Recipe;
+import it.ifttt.domain.Trigger;
+import it.ifttt.domain.User;
 import it.ifttt.repository.UserRepository;
+import it.ifttt.services.RepoService;
 import it.ifttt.services.security.SecurityService;
 import it.ifttt.social.CalendarCreator;
 import it.ifttt.social.TwitterTemplateCreator;
@@ -43,10 +49,57 @@ public class prova {
 	@Autowired
 	private TwitterTemplateCreator twitterTemplateCreator;
 	
+	@Autowired
+	private RepoService repoService;
+	
 	@RequestMapping(method=RequestMethod.GET)
 	public String getRecipe() {				
 		return "It works!";
 	}
+	
+	@RequestMapping(value="/getChannels", method = RequestMethod.GET)
+    public Set<Channel> getChannels() {
+		return repoService.getChannels();
+	}
+	
+	/*@RequestMapping(value="/saveRecipe", method = RequestMethod.PUT)
+    public Recipe saveRecipe(Recipe recipe) {
+		recipe.generateControl();
+		return repoService.saveRecipe(recipe);
+	}*/
+	
+	@RequestMapping(value="/printChannels", method = RequestMethod.GET)
+    public String printChannels() {
+	Set<Channel> channels = repoService.getChannels();
+		Iterator <Channel> it = channels.iterator();
+        String str = "Channels: <br>\n";
+		while(it.hasNext()) {
+                Channel ch = it.next();
+                str += "<br>\n&nbsp;&nbsp;&nbsp;";
+                str += "name: " + ch.getNameCh() + "<br>\n";
+                
+                List<Trigger> triggers = ch.getTriggers();
+                Iterator<Trigger> itTr = triggers.iterator();
+                str += "&nbsp;&nbsp;&nbsp;";
+                str += "Triggers: <br>\n";
+                while(itTr.hasNext()){
+                	Trigger tr = itTr.next();
+                	str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                	str +=  "- " + tr.getNameT() + "<br>\n";
+                }
+                
+                List<Action> actions = ch.getActions();
+                Iterator<Action> itAct = actions.iterator();
+                str += "&nbsp;&nbsp;&nbsp;";
+                str += "Actions: <br>\n";
+                while(itAct.hasNext()){
+                	Action act = itAct.next();
+                	str += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                	str +=  "- " + act.getNameA() + "<br>\n";
+                }
+        }
+		return str;
+    }
 	
 	@RequestMapping(value="/user", method = RequestMethod.GET)
     public User currentUser() {

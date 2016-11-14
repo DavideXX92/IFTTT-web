@@ -1,4 +1,4 @@
-package it.ifttt.model.user;
+package it.ifttt.domain;
 
 import java.io.Serializable;
 
