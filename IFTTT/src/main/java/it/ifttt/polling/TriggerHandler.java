@@ -1,23 +1,32 @@
 package it.ifttt.polling;
 
+import it.ifttt.domain.Recipe;
 import it.ifttt.domain.Trigger;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
 import it.ifttt.gcalendar.trigger.CalendarEventCreated;
 import it.ifttt.gcalendar.trigger.CalendarEventStarted;
 import it.ifttt.gmail.trigger.mailReceivedEvent;
+import it.ifttt.repository.TriggerRefreshRepository;
 import it.ifttt.trigger.TriggerEvent;
+
+import java.io.IOException;
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TriggerHandler {
 	private Trigger trigger;
 	private TriggerEvent event;	
 		
+	@Autowired
+	private TriggerRefreshRepository triggerRefreshRepository;
+	
 	public TriggerHandler(Trigger trigger){
 		this.trigger = trigger;
 	}
 	
-	public List<Object> raise(User user, List<UserIngredient> ingredients){
+	public List<Object> raise(User user, List<UserIngredient> ingredients, Recipe recipe)throws IOException{
 		try{
 			event.setUser(user);
 		}catch(Exception e){
@@ -25,6 +34,7 @@ public class TriggerHandler {
 			return new ArrayList<Object>();
 		}
 		event.setIngredients(ingredients);
+		event.setTriggerRefresh(triggerRefreshRepository.findOne(user.getId(), recipe.getIdR(), trigger.getIdT().idT, trigger.getIdT().idCh));
 		return event.raise(user, ingredients);
 	}
 	

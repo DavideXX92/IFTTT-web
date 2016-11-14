@@ -28,10 +28,12 @@ import org.apache.commons.lang3.StringUtils;
 import it.ifttt.domain.Action;
 import it.ifttt.domain.Ingredient;
 import it.ifttt.domain.Recipe;
+import it.ifttt.domain.TriggerRefresh;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
 import it.ifttt.repository.ActionRepository;
 import it.ifttt.repository.RecipeRepository;
+import it.ifttt.repository.TriggerRefreshRepository;
 import it.ifttt.social.GmailCreator;
 import it.ifttt.trigger.TriggerEvent;
 
@@ -50,18 +52,22 @@ public class mailReceivedEvent implements TriggerEvent  {
 	public static final String CHANNEL = "gmail";
 	
 	@Autowired
+	private TriggerRefreshRepository triggerRefreshRepository;
+	
+	@Autowired
 	private GmailCreator gmailCreator;
 	
 	private User user;
 	private List<UserIngredient> userIngredients;
 	private Gmail gmail;
+	private TriggerRefresh triggerRefresh;
 	
 	public mailReceivedEvent(){								
 		this.user = null;
 		this.userIngredients = null;
 	}
 	
-	public List<Object> raise(User user, List<UserIngredient> ingredients){
+	public List<Object> raise(User user, List<UserIngredient> ingredients) throws IOException{
 		String query = createQueryString();
 		ListMessagesResponse listResponse = gmail.users().messages().list("me").setQ(query).execute();
         List<Message> messages = listResponse.getMessages();
@@ -81,16 +87,20 @@ public class mailReceivedEvent implements TriggerEvent  {
 				message = fillMessageFieldsFromMimeMessage(message, mimeMessage, gmail.users().getProfile("me").execute());
 			} catch (MessagingException e) { continue; }
         	
-        	if (new Date(message.getInternalDate()).after(getLastCheck())) {
+        	if (new Date(message.getInternalDate()).after(triggerRefresh.getLastRefresh())) {
         		
         		System.out.println("mail id: " + message.getId());
         		System.out.println("Is new mail");        		
-        		setLastCheck(new Date(message.getInternalDate()));
+        		//setLastCheck(new Date(message.getInternalDate()));
         		if (mailSatisfyTrigger(message)) {        			
         			System.out.println("Mail satisfy trigger");
 					newMessages.add(message);
         		}
         	}
+        }
+        if(newMessages.size() > 0){
+        	triggerRefresh.setLastRefresh(new Date());
+        	triggerRefreshRepository.save(triggerRefresh);
         }
         
 		return newMessages;
@@ -146,7 +156,7 @@ public class mailReceivedEvent implements TriggerEvent  {
 		/*if (getIngredient(FROM_KEY) != null) {
 			query += "from:" + getIngredient(FROM_KEY).getValue();
 		}*/
-		query += " after:" + dateFormat.format(getLastCheck());
+		query += " after:" + dateFormat.format(triggerRefresh.getLastRefresh());
 		System.out.println("Query: " + query);
 		return query;
 	}
@@ -185,5 +195,10 @@ public class mailReceivedEvent implements TriggerEvent  {
         	message.put(CC_KEY, StringUtils.substringsBetween(mimeMessage.getHeader("Cc")[0], "<", ">"));
         message.put(SUBJECT_KEY, mimeMessage.getHeader("Subject")[0]);
 		return message;
+	}
+
+	@Override
+	public void setTriggerRefresh(TriggerRefresh triggerRefresh) {
+		this.triggerRefresh = triggerRefresh;
 	}
 }
