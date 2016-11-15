@@ -9,6 +9,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -20,19 +21,8 @@ public class Action {
 	@EmbeddedId
     private ActionPK idA;
 	private String nameA;
-	private List<Ingredient> ingredients;
-	private Channel channel;
-	//private int idCh;
-	
-	/*@MapsId("idCh")
-	@JoinColumn(name="idCh", insertable=false, updatable=false)
-	public int getIdCh() {
-		return idCh;
-	}
-
-	public void setIdCh(int idCh) {
-		this.idCh = idCh;
-	}*/
+	//private List<Ingredient> ingredients;
+	//private Channel channel;
 
 	public ActionPK getIdA() {
 		return idA;
@@ -50,17 +40,22 @@ public class Action {
 		this.nameA = nameA;
 	}
 	
-	@Access(AccessType.PROPERTY)
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="action")
+	/*@Access(AccessType.PROPERTY)
+	//@OneToMany(fetch=FetchType.EAGER, mappedBy="action")
+	@OneToMany(fetch=FetchType.EAGER)
+	@JoinColumns({
+		@JoinColumn(name="idA", referencedColumnName="idA"),
+		@JoinColumn(name="idChA", referencedColumnName="idCh")
+	})
 	public List<Ingredient> getIngredients() {
 		return ingredients;
 	}
 	
 	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
-	}
+	}*/
 	
-	@Access(AccessType.PROPERTY)
+	/*@Access(AccessType.PROPERTY)
 	@MapsId("idCh")
 	@JoinColumn(name="idCh", insertable=false, updatable=false)
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -70,7 +65,7 @@ public class Action {
 	
 	public void setChannel(Channel channel) {
 		this.channel = channel;
-	}
+	}*/
 	
 
 }

@@ -6,6 +6,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,9 +21,9 @@ public class Ingredient {
 	
 	private int idIngr;
 	private String nameIngr;
-	public String type;
-	private Action action;
+	private String type;
 	private Trigger trigger;
+	private Action action;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -51,7 +52,7 @@ public class Ingredient {
 	}
 
 	@Access(AccessType.PROPERTY)
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumns({
 		@JoinColumn(name="idA", referencedColumnName="idA"),
 		@JoinColumn(name="idChA", referencedColumnName="idCh")
@@ -65,7 +66,7 @@ public class Ingredient {
 	}
 	
 	@Access(AccessType.PROPERTY)
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumns({
 		@JoinColumn(name="idT", referencedColumnName="idT"),
 		@JoinColumn(name="idChT", referencedColumnName="idCh")

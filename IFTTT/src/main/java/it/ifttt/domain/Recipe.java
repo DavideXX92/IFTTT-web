@@ -26,8 +26,8 @@ public class Recipe {
 	private int nUsers;
 	private boolean published;
 	private int whoPublished;
-	private List<Action> actions;
 	private Trigger trigger;
+	private List<Action> actions;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

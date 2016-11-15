@@ -9,6 +9,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
@@ -21,19 +22,9 @@ public class Trigger {
 	@EmbeddedId
     private TriggerPK idT;
 	private String nameT;
-	private List<Ingredient> ingredients;
-	private Channel channel;
-	//private int idCh;
-	
-	/*@MapsId("idCh")
-	@JoinColumn(name="idCh", insertable=false, updatable=false)
-	public int getIdCh() {
-		return idCh;
-	}
+	//private List<Ingredient> ingredients;
+	//private Channel channel;
 
-	public void setIdCh(int idCh) {
-		this.idCh = idCh;
-	}*/
 	public TriggerPK getIdT() {
 		return idT;
 	}
@@ -50,17 +41,22 @@ public class Trigger {
 		this.nameT = nameT;
 	}
 	
-	@Access(AccessType.PROPERTY)
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="trigger")
+	/*@Access(AccessType.PROPERTY)
+	//@OneToMany(fetch=FetchType.EAGER, mappedBy="trigger")
+	@OneToMany(fetch=FetchType.EAGER)
+	@JoinColumns({
+		@JoinColumn(name="idT", referencedColumnName="idT"),
+		@JoinColumn(name="idChT", referencedColumnName="idCh")
+	})
 	public List<Ingredient> getIngredients() {
 		return ingredients;
 	}
 	
 	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
-	}
+	}*/
 	
-	@Access(AccessType.PROPERTY)
+	/*@Access(AccessType.PROPERTY)
 	@MapsId("idCh")
 	@JoinColumn(name="idCh", insertable=false, updatable=false)
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -70,6 +66,6 @@ public class Trigger {
 	
 	public void setChannel(Channel channel) {
 		this.channel = channel;
-	}
+	}*/
 	
 }

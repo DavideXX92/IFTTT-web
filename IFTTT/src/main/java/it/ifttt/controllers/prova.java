@@ -15,6 +15,7 @@ import org.springframework.social.twitter.api.StreamWarningEvent;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.api.UserStreamParameters;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,7 +67,7 @@ public class prova {
 	@RequestMapping(value="/getIngredients", method = RequestMethod.GET)
     public List<UserIngredient> getIngredients() {
 		int idU = 1;
-		int idR = 2;
+		int idR = 1;
 		return repoService.getIngredients(idU, idR);
 	}
 	
@@ -82,7 +83,7 @@ public class prova {
 	}
 	
 	@RequestMapping(value="/saveRecipe", method = RequestMethod.PUT)
-    public Recipe saveRecipe(Recipe recipe) {
+    public Recipe saveRecipe(@RequestBody Recipe recipe) {
 		recipe.generateControl();
 		return repoService.saveRecipe(recipe);
 	}

@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -38,6 +39,7 @@ public class Channel {
 	
 	//@OneToMany(fetch=FetchType.EAGER, mappedBy="channel")
 	@OneToMany(fetch=FetchType.EAGER)
+	@JoinColumn(name="idCh")
 	public List<Trigger> getTriggers() {
 		return triggers;
 	}
@@ -48,6 +50,7 @@ public class Channel {
 	
 	//@OneToMany(fetch=FetchType.EAGER, mappedBy="channel")
 	@OneToMany(fetch=FetchType.EAGER)
+	@JoinColumn(name="idCh")
 	public List<Action> getActions() {
 		return actions;
 	}
