@@ -11,5 +11,5 @@ public interface TriggerRepository extends Repository<Trigger, Integer> {
 
 	@Query(value = "SELECT * FROM trigger WHERE idCh = ?1", nativeQuery = true)
 	List<Trigger> findTriggersByChannelId(int idChannel);
-	Trigger save(Trigger trigger);
+	//Trigger save(Trigger trigger);
 }

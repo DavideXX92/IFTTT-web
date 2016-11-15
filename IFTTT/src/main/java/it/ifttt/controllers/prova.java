@@ -15,6 +15,7 @@ import org.springframework.social.twitter.api.StreamWarningEvent;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.api.UserStreamParameters;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -189,13 +190,16 @@ public class prova {
 		return repoService.getRecipe("chT1idT1chA2idA1");
 	}
 	
-	@RequestMapping(value="/saveRecipe", method = RequestMethod.PUT)
+	@CrossOrigin
+	@RequestMapping(value="/saveRecipe", method = RequestMethod.POST)
     public Recipe saveRecipe(@RequestBody Recipe recipe) {
+		System.out.println("received: saveRecipe");
 		recipe.generateControl();
 		return repoService.saveRecipe(recipe);
 	}
 	
-	@RequestMapping(value="/saveUserIngredients", method = RequestMethod.PUT)
+	@CrossOrigin
+	@RequestMapping(value="/saveUserIngredients", method = RequestMethod.POST)
     public void saveRecipe(@RequestBody List<UserIngredient> userIngredientList) {
 		Iterator <UserIngredient> it = userIngredientList.iterator();
 		while(it.hasNext()) {

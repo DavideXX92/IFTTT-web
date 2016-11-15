@@ -11,5 +11,5 @@ public interface ActionRepository extends Repository<Action, Integer> {
 	
 	@Query(value = "SELECT * FROM action WHERE idCh = ?1", nativeQuery = true)
 	Set<Action> findActionsByChannelId(int idChannel);
-	Action save(Action action);
+	//Action save(Action action);
 }

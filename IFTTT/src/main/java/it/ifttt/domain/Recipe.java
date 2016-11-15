@@ -23,21 +23,21 @@ import com.google.api.services.calendar.Calendar.Channels;
 @Entity
 public class Recipe {
 
-	private int idR;
+	private Integer idR;
 	private String control;
 	private int nUsers;
 	private boolean published;
-	private int whoPublished;
+	private Integer whoPublished;
 	private Trigger trigger;
 	private List<Action> actions;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="idR")
-	public int getIdR() {
+	public Integer getIdR() {
 		return idR;
 	}
-	public void setIdR(int idR) {
+	public void setIdR(Integer idR) {
 		this.idR = idR;
 	}
 	public String getControl() {
@@ -65,15 +65,15 @@ public class Recipe {
 		this.published = published;
 	}
 	
-	public int getWhoPublished() {
+	public Integer getWhoPublished() {
 		return whoPublished;
 	}
-	public void setWhoPublished(int whoPublished) {
+	public void setWhoPublished(Integer whoPublished) {
 		this.whoPublished = whoPublished;
 	}
 	
 	@Access(AccessType.PROPERTY)
-	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="actionRecipe", 
 	 		   joinColumns={@JoinColumn(name="idR")},
 	 		   inverseJoinColumns={@JoinColumn(name="idA"), @JoinColumn(name="idCh")})
@@ -86,7 +86,7 @@ public class Recipe {
 	}
 	
 	@Access(AccessType.PROPERTY)
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumns({
 		@JoinColumn(name="idT",  referencedColumnName="idT", nullable=false),
 		@JoinColumn(name="idCh", referencedColumnName="idCh", nullable=false)
