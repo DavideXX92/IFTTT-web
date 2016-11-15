@@ -18,4 +18,6 @@ public interface IngredientRepository extends Repository<Ingredient, Integer>{
 	@Query(value = "SELECT * FROM ingredient WHERE idIngr = ?1", nativeQuery = true)
 	Ingredient findOne(int idIngr);
 	
+	@Query(value = "SELECT * FROM ingredient WHERE idA = ?1 AND idCh = ?2", nativeQuery = true)
+	List<Ingredient> getIngredientsByAction(int idA, int idCh);
 }

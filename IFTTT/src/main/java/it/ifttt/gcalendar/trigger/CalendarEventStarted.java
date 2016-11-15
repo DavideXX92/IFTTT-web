@@ -14,9 +14,11 @@ import com.google.api.services.calendar.model.Events;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import it.ifttt.domain.Ingredient;
 import it.ifttt.domain.TriggerRefresh;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
+import it.ifttt.repository.IngredientRepository;
 import it.ifttt.repository.TriggerRefreshRepository;
 import it.ifttt.social.CalendarCreator;
 import it.ifttt.trigger.TriggerEvent;
@@ -25,6 +27,8 @@ import com.google.api.services.calendar.Calendar;
 public class CalendarEventStarted implements TriggerEvent{
 	@Autowired
 	CalendarCreator calendarCreator;
+	@Autowired
+	private IngredientRepository ingredientRepository;
 	
 	@Autowired
 	TriggerRefreshRepository triggerRefreshRepository;
@@ -104,7 +108,8 @@ public class CalendarEventStarted implements TriggerEvent{
 	
 	private boolean eventSatisfyTrigger(Event event) {
 		for(UserIngredient userIngredient : userIngredients){
-			String name = userIngredient.getIngredient().getNameIngr();
+			Ingredient i = ingredientRepository.findOne(userIngredient.getIdUI().idIngr);
+			String name = i.getNameIngr();
 			switch(name){
 				case SUMMARY_KEY:
 					if(!userIngredient.getValue().equals(event.get(SUMMARY_KEY)))

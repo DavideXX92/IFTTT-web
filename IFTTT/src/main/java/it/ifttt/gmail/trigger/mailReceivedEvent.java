@@ -32,6 +32,7 @@ import it.ifttt.domain.TriggerRefresh;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
 import it.ifttt.repository.ActionRepository;
+import it.ifttt.repository.IngredientRepository;
 import it.ifttt.repository.RecipeRepository;
 import it.ifttt.repository.TriggerRefreshRepository;
 import it.ifttt.social.GmailCreator;
@@ -53,6 +54,8 @@ public class mailReceivedEvent implements TriggerEvent  {
 	
 	@Autowired
 	private TriggerRefreshRepository triggerRefreshRepository;
+	@Autowired
+	private IngredientRepository ingredientRepository;
 	
 	@Autowired
 	private GmailCreator gmailCreator;
@@ -117,7 +120,8 @@ public class mailReceivedEvent implements TriggerEvent  {
 		
 	private boolean mailSatisfyTrigger(Message message) {
 		for(UserIngredient userIngredient : userIngredients){
-			String name = userIngredient.getIngredient().getNameIngr();
+			Ingredient i = ingredientRepository.findOne(userIngredient.getIdUI().idIngr);
+			String name = i.getNameIngr();
 			switch(name){
 				case FROM_KEY:
 					if(!userIngredient.getValue().equals(message.get(FROM_KEY)))
