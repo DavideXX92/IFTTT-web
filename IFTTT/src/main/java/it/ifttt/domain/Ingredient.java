@@ -23,8 +23,10 @@ public class Ingredient {
 	private int idIngr;
 	private String nameIngr;
 	private String type;
-	private Trigger trigger;
-	private Action action;
+	private Integer idT;
+	private Integer idChT;
+	private Integer idA;
+	private Integer idChA;
 	private String tag;
 	private boolean visualizableToClient;
 	
@@ -54,7 +56,7 @@ public class Ingredient {
 		this.type = type;
 	}
 
-	@Access(AccessType.PROPERTY)
+	/*@Access(AccessType.PROPERTY)
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumns({
 		@JoinColumn(name="idA", referencedColumnName="idA"),
@@ -80,7 +82,7 @@ public class Ingredient {
 
 	public void setTrigger(Trigger trigger) {
 		this.trigger = trigger;
-	}
+	}*/
 
 	public String getTag() {
 		return tag;
@@ -97,6 +99,47 @@ public class Ingredient {
 	public void setVisualizableToClient(boolean visualizableToClient) {
 		this.visualizableToClient = visualizableToClient;
 	}
+
+	@JoinColumn(name="idT")
+	public Integer getIdT() {
+		return idT;
+	}
+
+	public void setIdT(Integer idT) {
+		this.idT = idT;
+	}
+
+	@JoinColumn(name="idChT")
+	public Integer getIdChT() {
+		return idChT;
+	}
+
+	public void setIdChT(Integer idChT) {
+		this.idChT = idChT;
+	}
+
+	@JoinColumn(name="idCh")
+	public Integer getIdA() {
+		return idA;
+	}
+
+	@JoinColumn(name="idA")
+	public void setIdA(Integer idA) {
+		this.idA = idA;
+	}
+
+	public Integer getIdChA() {
+		return idChA;
+	}
+
+	public void setIdChA(Integer idChA) {
+		this.idChA = idChA;
+	}
+
+
+
+	
+
 	
 	
 }

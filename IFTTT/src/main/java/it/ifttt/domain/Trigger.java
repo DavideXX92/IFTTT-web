@@ -24,7 +24,7 @@ public class Trigger {
     private TriggerPK idT;
 	private String nameT;
 	//private Channel channel;
-	//private List<Ingredient> ingredients;
+	private List<Ingredient> ingredients;
 
 	public TriggerPK getIdT() {
 		return idT;
@@ -42,7 +42,7 @@ public class Trigger {
 		this.nameT = nameT;
 	}
 	
-	/*@Access(AccessType.PROPERTY)
+	@Access(AccessType.PROPERTY)
 	//@OneToMany(fetch=FetchType.EAGER, mappedBy="trigger")
 	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumns({
@@ -55,7 +55,7 @@ public class Trigger {
 	
 	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
-	}*/
+	}
 	
 	/*@Access(AccessType.PROPERTY)
 	@MapsId("idCh")

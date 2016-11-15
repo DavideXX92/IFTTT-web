@@ -22,7 +22,7 @@ public class Action {
 	@EmbeddedId
     private ActionPK idA;
 	private String nameA;
-	//private List<Ingredient> ingredients;
+	private List<Ingredient> ingredients;
 	//private Channel channel;
 
 	public ActionPK getIdA() {
@@ -41,7 +41,7 @@ public class Action {
 		this.nameA = nameA;
 	}
 	
-	/*@Access(AccessType.PROPERTY)
+	@Access(AccessType.PROPERTY)
 	//@OneToMany(fetch=FetchType.EAGER, mappedBy="action")
 	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumns({
@@ -54,7 +54,7 @@ public class Action {
 	
 	public void setIngredients(List<Ingredient> ingredients) {
 		this.ingredients = ingredients;
-	}*/
+	}
 	
 	/*@Access(AccessType.PROPERTY)
 	@MapsId("idCh")
