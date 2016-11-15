@@ -12,5 +12,4 @@ public interface ActionPerformer {
 	void perform();
 	void setUser(User user) throws IOException, GeneralSecurityException;
 	void setActionIngredients(List<UserIngredient> userIngredients);
-	void injectIngredients(List<Ingredient> injectableIngredient, Object obj);
 }

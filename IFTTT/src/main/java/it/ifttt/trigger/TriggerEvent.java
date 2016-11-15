@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
+import it.ifttt.domain.Ingredient;
 import it.ifttt.domain.TriggerRefresh;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
@@ -13,4 +14,5 @@ public interface TriggerEvent {
 	void setUser(User user) throws IOException, GeneralSecurityException;
 	void setIngredients(List<UserIngredient> userIngredients);
 	void setTriggerRefresh(TriggerRefresh triggerRefresh);
+	List<UserIngredient> injectIngredients(List<Ingredient> injeactableIngredient,Object obj);
 }

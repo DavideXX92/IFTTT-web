@@ -208,7 +208,7 @@ public class CalendarCreateEvent implements ActionPerformer{
 	private String resolveIngredient(String name, boolean nullable){
 		UserIngredient tmp = null;
 		for(UserIngredient ui : actionIngredient){
-			int ingredientId = ui.getIdUI().idIngr;
+			int ingredientId = ui.getIdUI().getIdIngr();
 			if(ingredientRepository.findOne(ingredientId).getNameIngr().equals(name)){
 				tmp = ui;
 				break;
@@ -221,60 +221,12 @@ public class CalendarCreateEvent implements ActionPerformer{
 		
 		tmp = null;
 		for(UserIngredient ui : injectedIngredients){
-			int ingredientId = ui.getIdUI().idIngr;
+			int ingredientId = ui.getIdUI().getIdIngr();
 			if(ingredientRepository.findOne(ingredientId).getNameIngr().equals(name)){
 				tmp = ui;
 			}							
 		}
 		
 		return tmp.getValue();
-	}
-	
-	@Override
-	public void injectIngredients(List<Ingredient> injeactableIngredient,Object obj) {
-		Message message = (Message)obj;
-		injectedIngredients = new ArrayList<UserIngredient>();
-		
-		for(Ingredient i : injeactableIngredient){
-			switch(i.getNameIngr()){
-			case SUMMARY_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(SUMMARY_KEY)));
-				break;
-			case DESCRIPTION_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(DESCRIPTION_KEY)));
-				break;
-			case LOCATION_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(LOCATION_KEY)));
-				break;
-			case CREATOR_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(CREATOR_KEY)));
-				break;
-			case ATTENDEES_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(ATTENDEES_KEY)));
-				break;
-			case CREATED_DATE_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(CREATED_DATE_KEY)));
-				break;
-			case CREATOR_NAME_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(CREATOR_NAME_KEY)));
-				break;
-			case START_DATE_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(START_DATE_KEY)));
-				break;
-			case END_DATE_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(END_DATE_KEY)));
-				break;
-			}
-		}							
-	}
-	
-	private UserIngredient newUserIngredient(Ingredient ingredient, String value){
-		UserIngredient userIngredient = new UserIngredient();
-		userIngredient.setValue(value);
-		UserIngredientPK uipk = new UserIngredientPK();
-		uipk.idIngr = ingredient.getIdIngr();
-		userIngredient.setIdUI(uipk);;
-		
-		return userIngredient;
 	}
 }

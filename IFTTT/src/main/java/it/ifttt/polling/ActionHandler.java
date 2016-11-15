@@ -41,7 +41,7 @@ public class ActionHandler {
 		}
 		actionPerformer.setActionIngredients(ingredients);
 		List<Ingredient> injectableIngredients = ingredientRepository.getIngredientsByAction(action.getIdA().idA, action.getIdA().idCh);
-		actionPerformer.injectIngredients(injectableIngredients, objIngredients);
+		//actionPerformer.injectIngredients(injectableIngredients, objIngredients);
 		actionPerformer.perform();
 	}
 	

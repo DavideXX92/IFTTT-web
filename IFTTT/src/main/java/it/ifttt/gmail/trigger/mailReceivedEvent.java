@@ -34,6 +34,7 @@ import it.ifttt.domain.Recipe;
 import it.ifttt.domain.TriggerRefresh;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
+import it.ifttt.domain.UserIngredientPK;
 import it.ifttt.repository.ActionRepository;
 import it.ifttt.repository.IngredientRepository;
 import it.ifttt.repository.RecipeRepository;
@@ -117,9 +118,53 @@ public class mailReceivedEvent implements TriggerEvent  {
 		this.userIngredients = userIngredients;
 	}
 		
+	@Override
+	public List<UserIngredient> injectIngredients(List<Ingredient> injeactableIngredient,Object obj) {
+		List<UserIngredient> injectedIngredients = new ArrayList<UserIngredient>();
+		Message message = (Message)obj;
+		
+		for(Ingredient i : injeactableIngredient){
+			switch(i.getNameIngr()){
+			case FROM_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(FROM_KEY)));
+				break;
+			case TO_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(TO_KEY)));
+				break;
+			case CC_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(CC_KEY)));
+				break;
+			case SUBJECT_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(SUBJECT_KEY)));
+				break;
+			case LABELS_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(LABELS_KEY)));
+				break;
+			case FROM_NAME_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(FROM_NAME_KEY)));
+				break;
+			case TO_NAME_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(TO_NAME_KEY)));
+				break;
+			}
+		}		
+		
+		return injectedIngredients;
+	}
+	
+	private UserIngredient newUserIngredient(Ingredient ingredient, String value){
+		UserIngredient userIngredient = new UserIngredient();
+		userIngredient.setValue(value);
+		UserIngredientPK uipk = new UserIngredientPK();
+		uipk.setIdIngr(ingredient.getIdIngr());
+		userIngredient.setIdUI(uipk);;
+		
+		return userIngredient;
+	}
+	
 	private boolean mailSatisfyTrigger(Message message) {
 		for(UserIngredient userIngredient : userIngredients){
-			Ingredient i = ingredientRepository.findOne(userIngredient.getIdUI().idIngr);
+			Ingredient i = ingredientRepository.findOne(userIngredient.getIdUI().getIdIngr());
 			String name = i.getNameIngr();
 			switch(name){
 				case FROM_KEY:

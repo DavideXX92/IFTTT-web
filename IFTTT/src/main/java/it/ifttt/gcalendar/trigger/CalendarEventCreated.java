@@ -15,11 +15,13 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.Events;
+import com.google.api.services.gmail.model.Message;
 
 import it.ifttt.domain.Ingredient;
 import it.ifttt.domain.TriggerRefresh;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
+import it.ifttt.domain.UserIngredientPK;
 import it.ifttt.repository.IngredientRepository;
 import it.ifttt.repository.TriggerRefreshRepository;
 import it.ifttt.social.CalendarCreator;
@@ -41,7 +43,34 @@ public class CalendarEventCreated implements TriggerEvent{
 	public static final String SUMMARY_KEY = "summary";
 	public static final String DESCRIPTION_KEY = "description";
 	public static final String LOCATION_KEY = "location";
-	public static final String CREATOR_KEY = "creator";	
+	public static final String CREATOR_KEY = "creator";
+	
+	public static final String ATTENDEES_KEY = "attendees";
+	public static final String CREATED_DATE_KEY = "created-date";
+	public static final String CREATOR_NAME_KEY = "creator-name";
+	public static final String START_DATE_KEY = "start-date";
+	public static final String END_DATE_KEY = "end-date";
+	
+	public static final String ALL_DAY_KEY = "all-day";
+	public static final String START_KEY = "start";
+	public static final String END_KEY = "end";
+	public static final String TIME_ZONE_KEY = "time-zone";
+	public static final String RECURRENT_KEY = "recurrent";
+	public static final String FREQUENCY_KEY = "frequency";
+	public static final String COUNT_KEY = "count";
+	public static final String UNTIL_KEY = "until";	
+	public static final String REMINDER_KEY = "reminder";
+	public static final String REMINDER_METHOD_KEY = "reminder-method";
+	public static final String REMINDER_MINUTES_KEY = "reminder-minutes";
+	
+	public static final String FREQUENCY_HOURLY = "HOURLY";
+	public static final String FREQUENCY_DAILY = "DAILY";
+	public static final String FREQUENCY_WEEKLY = "WEEKLY";
+	public static final String FREQUENCY_MONTHLY = "MONTHLY";
+	public static final String FREQUENCY_YEARLY = "YEARLY";
+	
+	public static final String REMINDER_POPUP = "popup";
+	public static final String REMINDER_EMAIL = "email";
 	
 	public static final String CHANNEL = "gcalendar";
 	
@@ -102,7 +131,7 @@ public class CalendarEventCreated implements TriggerEvent{
 
 	private boolean eventSatisfyTrigger(Event event) {
 		for(UserIngredient userIngredient : userIngredients){
-			Ingredient i = ingredientRepository.findOne(userIngredient.getIdUI().idIngr);
+			Ingredient i = ingredientRepository.findOne(userIngredient.getIdUI().getIdIngr());
 			String name = i.getNameIngr();
 			switch(name){
 				case SUMMARY_KEY:
@@ -129,5 +158,55 @@ public class CalendarEventCreated implements TriggerEvent{
 	@Override
 	public void setTriggerRefresh(TriggerRefresh triggerRefresh) {
 		this.triggerRefresh = triggerRefresh;
+	}
+	
+	@Override
+	public List<UserIngredient> injectIngredients(List<Ingredient> injeactableIngredient,Object obj) {
+		List<UserIngredient> injectedIngredients = new ArrayList<UserIngredient>();
+		Message message = (Message)obj;
+		
+		for(Ingredient i : injeactableIngredient){
+			switch(i.getNameIngr()){
+			case SUMMARY_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(SUMMARY_KEY)));
+				break;
+			case DESCRIPTION_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(DESCRIPTION_KEY)));
+				break;
+			case LOCATION_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(LOCATION_KEY)));
+				break;
+			case CREATOR_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(CREATOR_KEY)));
+				break;
+			case ATTENDEES_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(ATTENDEES_KEY)));
+				break;
+			case CREATED_DATE_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(CREATED_DATE_KEY)));
+				break;
+			case CREATOR_NAME_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(CREATOR_NAME_KEY)));
+				break;
+			case START_DATE_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(START_DATE_KEY)));
+				break;
+			case END_DATE_KEY:
+				injectedIngredients.add(newUserIngredient(i, (String) message.get(END_DATE_KEY)));
+				break;
+			}
+		}		
+		
+		return injectedIngredients;
+	}
+	
+	private UserIngredient newUserIngredient(Ingredient ingredient, String value){
+		UserIngredient userIngredient = new UserIngredient();
+		userIngredient.setValue(value);
+		UserIngredientPK uipk = new UserIngredientPK();
+		uipk.setIdIngr(ingredient.getIdIngr());
+		userIngredient.setIdUI(uipk);;
+		
+		return userIngredient;
 	}
 }

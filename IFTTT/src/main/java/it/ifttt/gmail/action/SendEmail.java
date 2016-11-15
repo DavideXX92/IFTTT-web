@@ -102,43 +102,11 @@ public class SendEmail implements ActionPerformer{
 	public void setActionIngredients(List<UserIngredient> userIngredients) {
 		this.actionIngredient = userIngredients;
 	}
-
-	@Override
-	public void injectIngredients(List<Ingredient> injeactableIngredient,Object obj) {
-		Message message = (Message)obj;
-		injectedIngredients = new ArrayList<UserIngredient>();
-		
-		for(Ingredient i : injeactableIngredient){
-			switch(i.getNameIngr()){
-			case FROM_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(FROM_KEY)));
-				break;
-			case TO_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(TO_KEY)));
-				break;
-			case CC_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(CC_KEY)));
-				break;
-			case SUBJECT_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(SUBJECT_KEY)));
-				break;
-			case LABELS_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(LABELS_KEY)));
-				break;
-			case FROM_NAME_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(FROM_NAME_KEY)));
-				break;
-			case TO_NAME_KEY:
-				injectedIngredients.add(newUserIngredient(i, (String) message.get(TO_NAME_KEY)));
-				break;
-			}
-		}							
-	}
 	
 	private String resolveIngredient(String name){
 		UserIngredient tmp = null;
 		for(UserIngredient ui : actionIngredient){
-			int ingredientId = ui.getIdUI().idIngr;
+			int ingredientId = ui.getIdUI().getIdIngr();
 			if(ingredientRepository.findOne(ingredientId).getNameIngr().equals(name)){
 				tmp = ui;
 				break;
@@ -150,23 +118,13 @@ public class SendEmail implements ActionPerformer{
 		
 		tmp = null;
 		for(UserIngredient ui : injectedIngredients){
-			int ingredientId = ui.getIdUI().idIngr;
+			int ingredientId = ui.getIdUI().getIdIngr();
 			if(ingredientRepository.findOne(ingredientId).getNameIngr().equals(name)){
 				tmp = ui;
 			}							
 		}
 		
 		return tmp.getValue();
-	}
-	
-	private UserIngredient newUserIngredient(Ingredient ingredient, String value){
-		UserIngredient userIngredient = new UserIngredient();
-		userIngredient.setValue(value);
-		UserIngredientPK uipk = new UserIngredientPK();
-		uipk.idIngr = ingredient.getIdIngr();
-		userIngredient.setIdUI(uipk);;
-		
-		return userIngredient;
 	}
 	
 	/**
