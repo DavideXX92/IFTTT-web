@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="myTrigger")
@@ -22,8 +23,8 @@ public class Trigger {
 	@EmbeddedId
     private TriggerPK idT;
 	private String nameT;
-	//private List<Ingredient> ingredients;
 	//private Channel channel;
+	//private List<Ingredient> ingredients;
 
 	public TriggerPK getIdT() {
 		return idT;

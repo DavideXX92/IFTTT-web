@@ -13,12 +13,20 @@ public class UserIngredient {
 
 	@EmbeddedId
     private UserIngredientPK idUI;
-	private User user;
+	
+	/*private User user;
 	private Recipe recipe;
-	private Ingredient ingredient;
+	private Ingredient ingredient;*/
 	private String value;
 	
-	@Access(AccessType.PROPERTY)
+	public UserIngredientPK getIdUI() {
+		return idUI;
+	}
+	public void setIdUI(UserIngredientPK idUI) {
+		this.idUI = idUI;
+	}
+	
+	/*@Access(AccessType.PROPERTY)
 	@MapsId("idU")
 	@JoinColumn(name="idU")
 	@ManyToOne
@@ -49,7 +57,7 @@ public class UserIngredient {
 	}
 	public void setIngredient(Ingredient ingredient) {
 		this.ingredient = ingredient;
-	}
+	}*/
 	
 	public String getValue() {
 		return value;

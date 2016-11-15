@@ -88,6 +88,15 @@ public class prova {
 		return repoService.saveRecipe(recipe);
 	}
 	
+	@RequestMapping(value="/saveUserIngredients", method = RequestMethod.PUT)
+    public void saveRecipe(@RequestBody List<UserIngredient> userIngredientList) {
+		Iterator <UserIngredient> it = userIngredientList.iterator();
+		while(it.hasNext()) {
+			UserIngredient userIngredient = it.next();
+			repoService.saveUserIngredients(userIngredient);
+		}
+	}
+	
 	@RequestMapping(value="/getUsersWithAtLeastArecipeActive", method = RequestMethod.GET)
     public List<User> getUsersWithAtLeastArecipeActive() {
 		int idR = 1;

@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.ifttt.domain.Action;
 import it.ifttt.domain.Channel;
+import it.ifttt.domain.Ingredient;
 import it.ifttt.domain.Recipe;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
 import it.ifttt.repository.ActionRepository;
 import it.ifttt.repository.ChannelRepository;
+import it.ifttt.repository.IngredientRepository;
 import it.ifttt.repository.RecipeRepository;
 import it.ifttt.repository.TriggerRepository;
 import it.ifttt.repository.UserIngredientRepository;
@@ -35,6 +37,8 @@ public class RepoService {
 	private RecipeRepository recipeRepo;
 	@Autowired
 	private UserIngredientRepository userIngrRepo;
+	@Autowired
+	private IngredientRepository ingredientRepo;
 	
 	public Set<Channel> getChannels(){
 		return chRepo.findAll();
@@ -49,6 +53,7 @@ public class RepoService {
 		Recipe recipeDB = recipeRepo.findOne(recipe.getControl());
 		if(recipeDB==null){
 			System.out.println("La ricetta e' nuova, la salvo nel db");
+			recipe.incnUsers();
 			return recipeRepo.save(recipe);
 		}
 		else{
@@ -71,5 +76,13 @@ public class RepoService {
 	
 	public List<UserIngredient> getIngredients(int idU, int idR){
 		return userIngrRepo.findAll(idU, idR);
+	}
+	
+	public UserIngredient saveUserIngredients(UserIngredient userIngredient){
+		return userIngrRepo.save(userIngredient);
+	}
+	
+	public Ingredient getIngredientsById(int idIngr){
+		return ingredientRepo.findOne(idIngr);
 	}
 }

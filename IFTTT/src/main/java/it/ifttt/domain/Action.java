@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public class Action {
@@ -67,5 +68,4 @@ public class Action {
 		this.channel = channel;
 	}*/
 	
-
 }

@@ -15,6 +15,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.google.api.services.calendar.Calendar.Channels;
 
@@ -47,8 +48,14 @@ public class Recipe {
 	public int getnUsers() {
 		return nUsers;
 	}
-	public void setnUsers(int nUsers) {
+	public void setnUsers(int nUsers){
 		this.nUsers = nUsers;
+	}
+	public void incnUsers() {
+		this.nUsers++;
+	}
+	public void decnUsers() {
+		this.nUsers--;
 	}
 	public boolean isPublished() {
 		return published;
