@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TriggerHandler {
 	private Trigger trigger;
 	private TriggerEvent event;	
@@ -22,8 +24,16 @@ public class TriggerHandler {
 	@Autowired
 	private TriggerRefreshRepository triggerRefreshRepository;
 	
-	public TriggerHandler(Trigger trigger){
+	@Autowired
+	private CalendarEventStarted calendarEventStarted;
+	@Autowired
+	private CalendarEventCreated calendarEventCreated;
+	@Autowired
+	private mailReceivedEvent mailEvent;
+	
+	public void initialize(Trigger trigger){
 		this.trigger = trigger;
+		this.event = setEvent(trigger.getNameT());
 	}
 	
 	public List<Object> raise(User user, List<UserIngredient> ingredients, Recipe recipe)throws IOException{
@@ -43,13 +53,13 @@ public class TriggerHandler {
 		
 		switch(triggerName){
 			case "MAIL_RECEIVED":
-				event = new mailReceivedEvent();
+				event = mailEvent;
 				break;
-			case "EVENT_STARTED":
-				event = new CalendarEventStarted();
+			case "CALENDAR_EVENT_STARTED":
+				event = calendarEventStarted;
 				break;
-			case "EVENT_CREATED":
-				event = new CalendarEventCreated();
+			case "CALENDAR_EVENT_CREATED":
+				event = calendarEventCreated;
 				break;
 			case "SUNRISE":
 				

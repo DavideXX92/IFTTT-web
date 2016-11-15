@@ -12,6 +12,6 @@ public interface TriggerRefreshRepository extends Repository<TriggerRefresh, Int
 	
 	TriggerRefresh save(TriggerRefresh triggeRefresh);
 	
-	@Query(value = "SELECT * FROM triggerRefresh WHERE idU = ?1 AND idR = ?2 AND idT = ?3 AND idChT = ?4", nativeQuery = true)
+	@Query(value = "SELECT * FROM mytriggerrefresh WHERE idU = ?1 AND idR = ?2 AND idT = ?3 AND idChT = ?4", nativeQuery = true)
 	TriggerRefresh findOne(int idU, int idR, int idT, int idChT);
 }

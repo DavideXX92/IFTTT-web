@@ -5,8 +5,10 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
@@ -26,21 +28,22 @@ import it.ifttt.trigger.TriggerEvent;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 
+@Component
 public class CalendarEventCreated implements TriggerEvent{
 	@Autowired
 	CalendarCreator calendarCreator;
-	@Autowired
-	private IngredientRepository ingredientRepository;
 	
 	@Autowired
 	TriggerRefreshRepository triggerRefreshRepository;
+	@Autowired
+	private IngredientRepository ingredientRepository;
 	
 	public static final String SUMMARY_KEY = "summary";
 	public static final String DESCRIPTION_KEY = "description";
 	public static final String LOCATION_KEY = "location";
 	public static final String CREATOR_KEY = "creator";	
 	
-	public static final String CHANNEL = "gmail";
+	public static final String CHANNEL = "gcalendar";
 	
 	private User user;
 	private List<UserIngredient> userIngredients;
@@ -48,13 +51,8 @@ public class CalendarEventCreated implements TriggerEvent{
 	
 	private TriggerRefresh triggerRefresh;
 	
-	public CalendarEventCreated(){
-		this.user = null;
-		this.userIngredients = null;
-	}
-	
 	@Override
-	public List<Object> raise(User user, List<UserIngredient> ingredients) {	
+	public List<Object> raise(User user, List<UserIngredient> ingredients) {		
 		List<Object> satisfiedEvents = new ArrayList<Object>();
 		try {
 			DateTime lastCheck = new DateTime(triggerRefresh.getLastRefresh());
@@ -63,18 +61,21 @@ public class CalendarEventCreated implements TriggerEvent{
 	        // get next events for today
 	        Events events = calendar.events().list("primary")
 	            .setTimeMin(lastCheck)
-	            .setTimeMax(now)
+	            //.setTimeMax(now)
 	            .setOrderBy("startTime")
 	            .setSingleEvents(true)
 	            .execute();
-	        List<Event> items = events.getItems();			
-	        for (Event event : items) {
-        		if (eventSatisfyTrigger(event)) {
-        			System.out.println("Event satisfy trigger");
-        			satisfiedEvents.add(event);
-        		}
-	        }
-	        return satisfiedEvents;
+	        List<Event> items = events.getItems();	
+	        
+	        for (Event event : items) {	        	
+	        	Date eventCreation = new Date(event.getCreated().getValue());
+	        	System.out.println("Event creation: " + eventCreation + " Last refr: " + triggerRefresh.getLastRefresh());
+	        	if (eventCreation.after(triggerRefresh.getLastRefresh()))       		
+	        		if (eventSatisfyTrigger(event)) {
+	        			System.out.println("Event satisfy trigger");
+	        			satisfiedEvents.add(event);
+	        		}
+	        }	       
 		}catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

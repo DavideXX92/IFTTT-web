@@ -13,6 +13,7 @@ import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.Events;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import it.ifttt.domain.Ingredient;
 import it.ifttt.domain.TriggerRefresh;
@@ -24,21 +25,22 @@ import it.ifttt.social.CalendarCreator;
 import it.ifttt.trigger.TriggerEvent;
 import com.google.api.services.calendar.Calendar;
 
+@Component
 public class CalendarEventStarted implements TriggerEvent{
 	@Autowired
 	CalendarCreator calendarCreator;
-	@Autowired
-	private IngredientRepository ingredientRepository;
 	
 	@Autowired
 	TriggerRefreshRepository triggerRefreshRepository;
+	@Autowired
+	private IngredientRepository ingredientRepository;
 	
 	public static final String SUMMARY_KEY = "summary";
 	public static final String DESCRIPTION_KEY = "description";
 	public static final String LOCATION_KEY = "location";
 	public static final String CREATOR_KEY = "creator";
 	
-	public static final String CHANNEL = "gmail";
+	public static final String CHANNEL = "gcalendar";
 	
 	private User user;
 	private List<UserIngredient> userIngredients;
@@ -46,39 +48,30 @@ public class CalendarEventStarted implements TriggerEvent{
 	
 	private TriggerRefresh triggerRefresh;
 	
-	public CalendarEventStarted(){
-		this.user = null;
-		this.userIngredients = null;
-	}
-	
 	@Override
 	public List<Object> raise(User user, List<UserIngredient> ingredients) throws IOException{
 		List<Object> eventStarted = new ArrayList<Object>();
 		try {			
-			// get last created events
-			DateTime now = new DateTime(System.currentTimeMillis());
+			DateTime lastRefresh = new DateTime(triggerRefresh.getLastRefresh());
 	        Events events = calendar.events().list("primary")
-	            .setTimeMin(now)
+	            .setTimeMin(lastRefresh)
 	            .setOrderBy("updated")
 	            .setSingleEvents(false)
 	            .execute();
 	        List<Event> items = events.getItems();
-	        if (items.size() == 0)
+	        if (items.size() == 0)	        	
 	            return eventStarted;
 	        
 	        for (Event event : items) {
-	        	
-	        	System.out.printf("Event: %s (%s)\n", event.getSummary(), event.getCreated());
-	        	
-	        	if (new Date(event.getCreated().getValue()).after(triggerRefresh.getLastRefresh())) {
-	        		
-	        		System.out.println("Is new event");
-	        		//setLastCheck(new Date(event.getCreated().getValue()));
-	        		if (eventSatisfyTrigger(event)) {
-	        			System.out.println("Event satisfy trigger");
-	        			eventStarted.add(event);						
-	        		}
-	        	}
+	        	if(triggerRefresh.getLastRefresh().after(new Date(event.getCreated().getValue())))
+		        	if(new Date(event.getStart().getDateTime().getValue()).after(triggerRefresh.getLastRefresh())){		        		
+		        		System.out.println("Started event!");
+		        		//setLastCheck(new Date(event.getCreated().getValue()));
+		        		if (eventSatisfyTrigger(event)) {
+		        			System.out.println("Event satisfy trigger");
+		        			eventStarted.add(event);						
+		        		}
+		        	}
 	        }
 	        
 	        if(eventStarted.size() > 0){

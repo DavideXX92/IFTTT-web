@@ -27,16 +27,22 @@ public class TriggerPollingService {
 	@Autowired
 	UserIngredientRepository userIngredientRepository;
 	
+	@Autowired
+	TriggerHandler triggerHandler;
+	
 	@Scheduled(fixedDelay=5000)
 	public void triggerCheckEvent(){
 		List<Recipe> recipes = recipeRepository.findAll();
 		try{
 			for(Recipe recipe : recipes){
+				System.out.println("Ricetta trovata: " + recipe.getIdR());
 				List<User> users = userRepository.getUsersWithAtLeastArecipeActive(recipe.getIdR());
 				Trigger trigger = recipe.getTrigger();
-				TriggerHandler triggerHandler = new TriggerHandler(trigger);
+				System.out.println("Trigger attivato: " + trigger.getNameT());
+				triggerHandler.initialize(trigger);
 				
 				for(User user : users){
+					System.out.println("Utente: " + user.getUsername());
 					List<UserIngredient> ingredients = userIngredientRepository.findAll(user.getId(), recipe.getIdR());
 					List<Object> triggerParams = triggerHandler.raise(user, ingredients, recipe);
 					if(triggerParams.size() > 0){

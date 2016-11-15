@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Properties;
 
 import javax.mail.MessagingException;
@@ -16,6 +17,8 @@ import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
 
 import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.api.services.gmail.Gmail;
@@ -38,6 +41,7 @@ import it.ifttt.repository.TriggerRefreshRepository;
 import it.ifttt.social.GmailCreator;
 import it.ifttt.trigger.TriggerEvent;
 
+@Component
 public class mailReceivedEvent implements TriggerEvent  {
 	public static final String FROM_KEY = "from";
 	public static final String TO_KEY = "to";
@@ -54,21 +58,16 @@ public class mailReceivedEvent implements TriggerEvent  {
 	
 	@Autowired
 	private TriggerRefreshRepository triggerRefreshRepository;
-	@Autowired
-	private IngredientRepository ingredientRepository;
 	
 	@Autowired
 	private GmailCreator gmailCreator;
+	@Autowired
+	private IngredientRepository ingredientRepository;
 	
 	private User user;
 	private List<UserIngredient> userIngredients;
 	private Gmail gmail;
 	private TriggerRefresh triggerRefresh;
-	
-	public mailReceivedEvent(){								
-		this.user = null;
-		this.userIngredients = null;
-	}
 	
 	public List<Object> raise(User user, List<UserIngredient> ingredients) throws IOException{
 		String query = createQueryString();
@@ -82,7 +81,7 @@ public class mailReceivedEvent implements TriggerEvent  {
         Collections.reverse(messages);
         
         for(Message message : messages){
-        	// questo messaggio Ã¨ solo un header che torna gmail per efficienza, devo prendere quello completo
+        	// questo messaggio è solo un header che torna gmail per efficienza, devo prendere quello completo
         	message = gmail.users().messages().get("me", message.getId()).setFormat("raw").execute();
         	
         	try {
@@ -111,7 +110,7 @@ public class mailReceivedEvent implements TriggerEvent  {
 	
 	public void setUser(User user) throws IOException, GeneralSecurityException{
 		this.user = user;
-		gmail = gmailCreator.getGmail(user.getUsername());		
+		gmail = gmailCreator.getGmail(user.getUsername());			
 	}
 	
 	public void setIngredients(List<UserIngredient> userIngredients){
@@ -160,7 +159,14 @@ public class mailReceivedEvent implements TriggerEvent  {
 		/*if (getIngredient(FROM_KEY) != null) {
 			query += "from:" + getIngredient(FROM_KEY).getValue();
 		}*/
-		query += " after:" + dateFormat.format(triggerRefresh.getLastRefresh());
+		Date dateFilter = triggerRefresh.getLastRefresh();
+		if(dateFormat.format(dateFilter).equals(dateFormat.format(new Date()))){
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DATE, -1);
+			dateFilter = cal.getTime();
+		}
+			
+		query += " after:" + dateFormat.format(dateFilter);
 		System.out.println("Query: " + query);
 		return query;
 	}
