@@ -25,6 +25,8 @@ public class Ingredient {
 	private String type;
 	private Trigger trigger;
 	private Action action;
+	private String tag;
+	private boolean visualizableToClient;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -78,6 +80,22 @@ public class Ingredient {
 
 	public void setTrigger(Trigger trigger) {
 		this.trigger = trigger;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public boolean isVisualizableToClient() {
+		return visualizableToClient;
+	}
+
+	public void setVisualizableToClient(boolean visualizableToClient) {
+		this.visualizableToClient = visualizableToClient;
 	}
 	
 	
