@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -14,7 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 @Entity
 public class Action {
@@ -43,7 +43,7 @@ public class Action {
 	
 	@Access(AccessType.PROPERTY)
 	//@OneToMany(fetch=FetchType.EAGER, mappedBy="action")
-	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumns({
 		@JoinColumn(name="idA", referencedColumnName="idA"),
 		@JoinColumn(name="idChA", referencedColumnName="idCh")

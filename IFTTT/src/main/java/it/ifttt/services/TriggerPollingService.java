@@ -6,12 +6,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import it.ifttt.domain.Action;
 import it.ifttt.domain.Ingredient;
 import it.ifttt.domain.Recipe;
 import it.ifttt.domain.Trigger;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
+import it.ifttt.polling.ActionHandler;
 import it.ifttt.polling.TriggerHandler;
+import it.ifttt.repository.ActionRepository;
+import it.ifttt.repository.IngredientRepository;
 import it.ifttt.repository.RecipeRepository;
 import it.ifttt.repository.UserIngredientRepository;
 import it.ifttt.repository.UserRepository;
@@ -25,10 +29,19 @@ public class TriggerPollingService {
 	UserRepository userRepository;
 	
 	@Autowired
+	IngredientRepository ingredientRepository;
+	
+	@Autowired
 	UserIngredientRepository userIngredientRepository;
 	
 	@Autowired
+	ActionRepository actionRepository;
+	
+	@Autowired
 	TriggerHandler triggerHandler;
+	
+	@Autowired
+	ActionHandler actionHandler;
 	
 	@Scheduled(fixedDelay=5000)
 	public void triggerCheckEvent(){
@@ -43,12 +56,19 @@ public class TriggerPollingService {
 				
 				for(User user : users){
 					System.out.println("Utente: " + user.getUsername());
+					List<Action> actions = recipe.getActions();
 					List<UserIngredient> ingredients = userIngredientRepository.findAll(user.getId(), recipe.getIdR());
 					List<Object> triggerParams = triggerHandler.raise(user, ingredients, recipe);
-					if(triggerParams.size() > 0){
+					if(triggerParams.size() > 0){						
 						System.out.println("Evento scatenato!");
 						for(Object params : triggerParams){
-							
+							for(Action action : actions){
+								List<Ingredient> injectableIngredients = ingredientRepository.getIngredientsByAction(action.getIdA().idA, action.getIdA().idCh);
+								List<UserIngredient> injectedIngredient = triggerHandler.injectIngredients(injectableIngredients, params);
+								actionHandler.initialize(action);
+								actionHandler.setInjectableIngredients(injectedIngredient);
+								actionHandler.perform(user, ingredients);
+							}
 						}
 					}
 				}

@@ -15,5 +15,4 @@ public interface RecipeRepository extends Repository<Recipe, Integer> {
 	Recipe save(Recipe recipe);
 	
 	List<Recipe> findAll();
-	
 }

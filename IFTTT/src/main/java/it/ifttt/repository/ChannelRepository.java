@@ -11,5 +11,5 @@ public interface ChannelRepository extends Repository<Channel, Integer> {
 	
 	Set<Channel> findAll();	
 	Channel findOne(Integer idChannel);
-	
+	Channel save(Channel channel);
 }

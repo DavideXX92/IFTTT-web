@@ -229,4 +229,9 @@ public class CalendarCreateEvent implements ActionPerformer{
 		
 		return tmp.getValue();
 	}
+
+	@Override
+	public void injectIngredients(List<UserIngredient> injectedIngredients) {
+		this.injectedIngredients = injectedIngredients;
+	}
 }

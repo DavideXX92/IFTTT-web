@@ -173,4 +173,9 @@ public class SendEmail implements ActionPerformer{
         message.setRaw(encodedEmail);
         return message;
     }
+    
+    @Override
+	public void injectIngredients(List<UserIngredient> injectedIngredients) {
+		this.injectedIngredients = injectedIngredients;
+	}
 }

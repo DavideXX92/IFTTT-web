@@ -1,5 +1,6 @@
 package it.ifttt.polling;
 
+import it.ifttt.domain.Ingredient;
 import it.ifttt.domain.Recipe;
 import it.ifttt.domain.Trigger;
 import it.ifttt.domain.User;
@@ -74,7 +75,11 @@ public class TriggerHandler {
 				
 				break;
 			default:
-		}		
+		}
 		return event;
+	}
+	
+	public List<UserIngredient> injectIngredients(List<Ingredient> injeactableIngredient,Object obj){
+		return event.injectIngredients(injeactableIngredient, obj);
 	}
 }

@@ -26,13 +26,14 @@ public class ActionHandler {
 	
 	private ActionPerformer actionPerformer;
 	private Action action;
+	private List<UserIngredient> injectableIngredients;
 	
 	public void initialize(Action action){
 		this.action = action;
 		this.actionPerformer = setAction(action.getNameA());
 	}
 	
-	public void perform(User user, List<UserIngredient> ingredients, Object objIngredients){
+	public void perform(User user, List<UserIngredient> ingredients){
 		try{
 			actionPerformer.setUser(user);
 		}catch(Exception e){
@@ -40,9 +41,13 @@ public class ActionHandler {
 			return;
 		}
 		actionPerformer.setActionIngredients(ingredients);
-		List<Ingredient> injectableIngredients = ingredientRepository.getIngredientsByAction(action.getIdA().idA, action.getIdA().idCh);
-		//actionPerformer.injectIngredients(injectableIngredients, objIngredients);
+		//List<Ingredient> injectableIngredients = ingredientRepository.getIngredientsByAction(action.getIdA().idA, action.getIdA().idCh);
+		actionPerformer.injectIngredients(injectableIngredients);
 		actionPerformer.perform();
+	}
+	
+	public void setInjectableIngredients(List<UserIngredient> injectableIngredients){
+		this.injectableIngredients = injectableIngredients;
 	}
 	
 	private ActionPerformer setAction(String action){

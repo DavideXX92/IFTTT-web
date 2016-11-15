@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -72,7 +73,7 @@ public class Recipe {
 	}
 	
 	@Access(AccessType.PROPERTY)
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinTable(name="actionRecipe", 
 	 		   joinColumns={@JoinColumn(name="idR")},
 	 		   inverseJoinColumns={@JoinColumn(name="idA"), @JoinColumn(name="idCh")})
@@ -85,7 +86,7 @@ public class Recipe {
 	}
 	
 	@Access(AccessType.PROPERTY)
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumns({
 		@JoinColumn(name="idT",  referencedColumnName="idT", nullable=false),
 		@JoinColumn(name="idCh", referencedColumnName="idCh", nullable=false)

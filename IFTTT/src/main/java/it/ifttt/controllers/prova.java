@@ -32,6 +32,7 @@ import it.ifttt.domain.Recipe;
 import it.ifttt.domain.Trigger;
 import it.ifttt.domain.User;
 import it.ifttt.domain.UserIngredient;
+import it.ifttt.repository.ChannelRepository;
 import it.ifttt.repository.UserRepository;
 import it.ifttt.services.RepoService;
 import it.ifttt.services.security.SecurityService;
@@ -41,12 +42,57 @@ import it.ifttt.social.TwitterTemplateCreator;
 @RestController
 @RequestMapping("/prova")
 public class prova {
+	public static final String SUMMARY_KEY = "summary";
+	public static final String DESCRIPTION_KEY = "description";
+	public static final String LOCATION_KEY = "location";
+	public static final String CREATOR_KEY = "creator";	
+	public static final String ATTENDEES_KEY = "attendees";
+	public static final String CREATED_DATE_KEY = "created-date";
+	public static final String CREATOR_NAME_KEY = "creator-name";
+	public static final String START_DATE_KEY = "start-date";
+	public static final String END_DATE_KEY = "end-date";
+	
+	public static final String ALL_DAY_KEY = "all-day";
+	public static final String START_KEY = "start";
+	public static final String END_KEY = "end";
+	public static final String TIME_ZONE_KEY = "time-zone";
+	public static final String RECURRENT_KEY = "recurrent";
+	public static final String FREQUENCY_KEY = "frequency";
+	public static final String COUNT_KEY = "count";
+	public static final String UNTIL_KEY = "until";	
+	public static final String REMINDER_KEY = "reminder";
+	public static final String REMINDER_METHOD_KEY = "reminder-method";
+	public static final String REMINDER_MINUTES_KEY = "reminder-minutes";
+	
+	public static final String FREQUENCY_HOURLY = "HOURLY";
+	public static final String FREQUENCY_DAILY = "DAILY";
+	public static final String FREQUENCY_WEEKLY = "WEEKLY";
+	public static final String FREQUENCY_MONTHLY = "MONTHLY";
+	public static final String FREQUENCY_YEARLY = "YEARLY";
+	
+	public static final String REMINDER_POPUP = "popup";
+	public static final String REMINDER_EMAIL = "email";	
+	public static final String FROM_KEY = "from";
+	public static final String TO_KEY = "to";
+	public static final String CC_KEY = "cc";
+	public static final String SUBJECT_KEY = "subject";
+	public static final String LABELS_KEY = "labels";
+	public static final String BODY_KEY = "body";
+	
+	public static final String FROM_NAME_KEY = "from-name";
+	public static final String TO_NAME_KEY = "to-name";
+	public static final String THREAD_ID_KEY = "thread-id";
+	
+	public static final String CHANNEL = "gmail";
 	
 	@Autowired
     private SecurityService securityService;
 	
 	@Autowired
 	private UserRepository UserRepository;
+	
+	@Autowired
+	private ChannelRepository channelRepository;
 	
 	@Autowired
 	private TwitterTemplateCreator twitterTemplateCreator;
@@ -71,6 +117,67 @@ public class prova {
 		return repoService.getIngredients(idU, idR);
 	}
 	
+	
+	@RequestMapping(value="/popolate", method = RequestMethod.PUT)
+    public String popola() {	
+		String gmail = "gmail";
+		String calendar = "gcalendar";
+		String meteo = "weather";
+		List<String> gmailActionName = new ArrayList<>(Arrays.asList("SEND_EMAIL"));
+		List<String> gmailTriggerName = new ArrayList<>(Arrays.asList("MAIL_RECEIVED"));
+		List<String> gcalendarActionName = new ArrayList<>(Arrays.asList("CREATE_CALENDAR_EVENT"));
+		List<String> gcalendarTriggerName = new ArrayList<>(Arrays.asList("CALENDAR_EVENT_STARTED","CALENDAR_EVENT_CREATED"));
+		List<String> meteoTriggerName = new ArrayList<>(Arrays.asList("SUNRISE","CURRENT_TEMPERATURE_BELOW_TH","CURRENT_TEMPERATURE_ABOVE_TH",
+				"TOMORROW_WEATHER"));
+		List<String> gmailActionIngredient = new ArrayList<>(Arrays.asList(FROM_KEY, TO_KEY, CC_KEY, SUBJECT_KEY, LABELS_KEY, BODY_KEY, FROM_NAME_KEY,
+				TO_NAME_KEY, THREAD_ID_KEY));
+		List<String> gcalendarActionIngredient = new ArrayList<>(Arrays.asList(SUMMARY_KEY,DESCRIPTION_KEY,LOCATION_KEY,CREATOR_KEY,ATTENDEES_KEY,CREATED_DATE_KEY,
+				CREATOR_NAME_KEY,START_DATE_KEY,END_DATE_KEY,ALL_DAY_KEY,START_KEY,END_KEY,
+				TIME_ZONE_KEY,RECURRENT_KEY,FREQUENCY_KEY,COUNT_KEY,UNTIL_KEY,REMINDER_KEY,
+				REMINDER_METHOD_KEY,REMINDER_MINUTES_KEY,FREQUENCY_HOURLY,FREQUENCY_DAILY,
+				FREQUENCY_WEEKLY,FREQUENCY_MONTHLY,FREQUENCY_MONTHLY,REMINDER_POPUP,REMINDER_EMAIL));
+		List<String> gmailTriggerIngredient = new ArrayList<>(Arrays.asList(FROM_KEY, TO_KEY, CC_KEY, SUBJECT_KEY, LABELS_KEY, BODY_KEY));
+		List<String> gcalendarTriggerIngredient = new ArrayList<>(Arrays.asList(SUMMARY_KEY,DESCRIPTION_KEY,LOCATION_KEY,CREATOR_KEY));		
+		
+		Channel gmailCh = new Channel();
+		gmailCh.setNameCh(gmail);
+		List<Trigger> gmailTr = new ArrayList<Trigger>();
+		for(String tmp : gmailTriggerName){
+			Trigger t = new Trigger();
+			t.setNameT(tmp);
+			gmailTr.add(t);
+		}		
+		gmailCh.setTriggers(gmailTr);
+		List<Action> gmailA = new ArrayList<Action>();
+		for(String tmp : gmailActionName){
+			Action t = new Action();
+			t.setNameA(tmp);
+			
+			gmailA.add(t);
+		}
+		gmailCh.setActions(gmailA);
+		gmailCh = channelRepository.save(gmailCh);
+		
+		Channel calendarCh = new Channel();
+		calendarCh.setNameCh(calendar);
+		List<Trigger> calendarTr = new ArrayList<Trigger>();
+		for(String tmp : gcalendarTriggerName){
+			Trigger t = new Trigger();
+			t.setNameT(tmp);
+			calendarTr.add(t);
+		}
+		calendarCh.setTriggers(calendarTr);
+		List<Action> calendarA = new ArrayList<Action>();
+		for(String tmp : gcalendarActionName){
+			Action t = new Action();
+			t.setNameA(tmp);
+			calendarA.add(t);
+		}
+		calendarCh.setActions(calendarA);
+		calendarCh = channelRepository.save(calendarCh);
+		
+		return "popolato";
+	}
 	
 	@RequestMapping(value="/getRecipes", method = RequestMethod.GET)
     public List<Recipe> getRecipes() {
